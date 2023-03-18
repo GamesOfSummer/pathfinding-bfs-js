@@ -5,7 +5,7 @@
     "main": "index.js",
     "type": "module",
     "scripts": {
-        "run": "tsc -t ES2020 src/index.ts src/helpers.ts src/data.ts && node src/index.js",
+        "run": "tsc -t ES2020 src/index.ts src/helpers.ts && node src/index.js",
         "⬇️ install-npm-packages": "npm install",
         "___Global install NCU to run the commands below": "https://www.npmjs.com/package/npm-check-updates",
         "🔍check-npm-packages": "ncu",

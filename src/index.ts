@@ -5,64 +5,56 @@ import {
     validateFxn,
 } from './helpers.js';
 
-import { list, getDragon, Dragon } from './data.js';
+const NO_ONE = 0;
+const BY_A = 1;
+const BY_B = 2;
 
-const findMostCommonColor = (
-    list: Dragon[],
-    myId: number,
-    degreesOfSeparation: number
-): string => {
-    let queue: number[] = [myId];
-    let seenArray: number[] = [myId];
+function generateVisited(maze) {
+    const visited = [];
 
-    let newQueue: number[] = [];
+    for (let y = 0; y < maze.length; y++) {
+        const yAxis = [];
+        for (let x = 0; x < maze[y].length; x++) {
+            const coordinate = {
+                closed: maze[y][x] === 1,
+                length: 0,
+                openedBy: NO_ONE,
+            };
 
-    const jobs = {};
-
-    for (let j = 0; j <= degreesOfSeparation; j++) {
-        newQueue = [];
-
-        while (queue.length > 0) {
-            const user: Dragon = getDragon(list, queue.shift());
-            jobs[user.color] = jobs[user.color] ? jobs[user.color] + 1 : 1;
-
-            // cycle through user connections
-            for (let i = 0; i < user.connections.length; i++) {
-                let connectionId = user.connections[i];
-
-                if (!seenArray.includes(connectionId)) {
-                    newQueue.push(connectionId);
-                    seenArray.push(connectionId);
-                }
-            }
+            yAxis.push(coordinate);
         }
-
-        queue = newQueue;
+        visited.push(yAxis);
     }
 
-    //process job count !
-    let biggestNumber = 0;
-    let biggestJobName = '';
+    return visited;
+}
 
-    const jobKeys = Object.keys(jobs);
+function findShortestPathLength(maze, [xA, yA], [xB, yB]) {
+    // code goes here
+    const visited = generateVisited(maze);
+    console.log(generateVisited(maze));
 
-    for (let i = 0; i < Object.keys(jobs).length; i++) {
-        let currentJob = jobKeys[i];
-        let currentJobCountValue = jobs[currentJob];
+    visited[yA][xA].openedBy = BY_A;
+    visited[yB][xB].openedBy = BY_B;
 
-        if (currentJobCountValue > biggestNumber) {
-            biggestJobName = currentJob;
-            biggestNumber = currentJobCountValue;
-        }
-    }
+    let aQueue = [visited[yA][xA]];
+    let bQueue = [visited[yB][xB]];
 
-    return biggestJobName;
-};
+
+    while()
+}
 
 consoleStart();
 
-validateFxn(findMostCommonColor(list, 30, 2), 'Rooxo');
-validateFxn(findMostCommonColor(list, 30, 3), 'Shufflebeat');
+const fourByFour = [
+    [2, 0, 0, 0],
+    [0, 0, 0, 0],
+    [0, 0, 0, 0],
+    [0, 0, 0, 2],
+];
+
+validateFxn(findShortestPathLength(fourByFour, [0, 0], [3, 3]), 6);
+
 consoleEnd();
 consoleBuffer();
 
