@@ -9,13 +9,19 @@ const NO_ONE = 0;
 const BY_A = 1;
 const BY_B = 2;
 
-function generateVisited(maze) {
+interface Coordinate {
+    closed: boolean;
+    length: number;
+    openedBy: number;
+}
+
+function generateVisitedObjectArray(maze): Coordinate[] {
     const visited = [];
 
     for (let y = 0; y < maze.length; y++) {
         const yAxis = [];
         for (let x = 0; x < maze[y].length; x++) {
-            const coordinate = {
+            const coordinate: Coordinate = {
                 closed: maze[y][x] === 1,
                 length: 0,
                 openedBy: NO_ONE,
@@ -29,10 +35,10 @@ function generateVisited(maze) {
     return visited;
 }
 
-function findShortestPathLength(maze, [xA, yA], [xB, yB]) {
+function findShortestPathLength(maze: Coordinate[], [xA, yA], [xB, yB]) {
     // code goes here
-    const visited = generateVisited(maze);
-    console.log(generateVisited(maze));
+    const visited = generateVisitedObjectArray(maze);
+    console.log(generateVisitedObjectArray(maze));
 
     visited[yA][xA].openedBy = BY_A;
     visited[yB][xB].openedBy = BY_B;
@@ -40,9 +46,46 @@ function findShortestPathLength(maze, [xA, yA], [xB, yB]) {
     let aQueue = [visited[yA][xA]];
     let bQueue = [visited[yB][xB]];
 
-
-    while()
+    //while()
 }
+
+const getNeighbors = (visited: Coordinate[], x: number, y: number) => {
+    const neighbors = [];
+
+    if (canGoLeft(visited, x, y)) {
+        neighbors.push(visited[y - 1][x]);
+    }
+
+    if (canGoRight(visited, x, y)) {
+        neighbors.push(visited[y + 1][x]);
+    }
+
+    if (canGoUp(visited, x, y)) {
+        neighbors.push(visited[y][x - 1]);
+    }
+
+    if (canGoDown(visited, x, y)) {
+        neighbors.push(visited[y][x + 1]);
+    }
+
+    return neighbors;
+};
+
+const canGoLeft = (visited: Coordinate[], x: number, y: number) => {
+    return y - 1 >= 0 && !visited[y - 1][x].closed;
+};
+
+const canGoRight = (visited: Coordinate[], x: number, y: number) => {
+    return y + 1 < visited[0].length && !visited[y + 1][x].closed;
+};
+
+const canGoUp = (visited: Coordinate[], x: number, y: number) => {
+    return x - 1 >= 0 && !visited[y][x - 1].closed;
+};
+
+const canGoDown = (visited: Coordinate[], x: number, y: number) => {
+    return x + 1 < visited.length && !visited[y][x + 1].closed;
+};
 
 consoleStart();
 
