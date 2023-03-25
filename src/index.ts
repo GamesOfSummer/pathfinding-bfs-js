@@ -13,6 +13,8 @@ interface Coordinate {
     closed: boolean;
     length: number;
     openedBy: number;
+    x: number;
+    y: number;
 }
 
 function generateVisitedObjectArray(maze): Coordinate[] {
@@ -25,6 +27,8 @@ function generateVisitedObjectArray(maze): Coordinate[] {
                 closed: maze[y][x] === 1,
                 length: 0,
                 openedBy: NO_ONE,
+                x: x,
+                y: y,
             };
 
             yAxis.push(coordinate);
@@ -35,9 +39,9 @@ function generateVisitedObjectArray(maze): Coordinate[] {
     return visited;
 }
 
-function findShortestPathLength(maze: Coordinate[], [xA, yA], [xB, yB]) {
+function findShortestPathLength(maze: number[][], [xA, yA], [xB, yB]) {
     // code goes here
-    const visited = generateVisitedObjectArray(maze);
+    const visited: Coordinate[] = generateVisitedObjectArray(maze);
     console.log(generateVisitedObjectArray(maze));
 
     visited[yA][xA].openedBy = BY_A;
@@ -45,8 +49,23 @@ function findShortestPathLength(maze: Coordinate[], [xA, yA], [xB, yB]) {
 
     let aQueue = [visited[yA][xA]];
     let bQueue = [visited[yB][xB]];
+    let iteration = 0;
 
-    //while()
+    while (aQueue.length && bQueue.length) {
+        iteration++;
+        let aNeighbors = [];
+
+        while (aQueue.length) {
+            const coordinate: Coordinate = aQueue.shift();
+            aNeighbors = aNeighbors.concat(
+                getNeighbors(visited, coordinate.x, coordinate.y)
+            );
+        }
+
+        bQueue = [];
+    }
+
+    return -1;
 }
 
 const getNeighbors = (visited: Coordinate[], x: number, y: number) => {
