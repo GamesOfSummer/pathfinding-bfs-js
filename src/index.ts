@@ -40,7 +40,6 @@ function generateVisitedObjectArray(maze): Coordinate[] {
 }
 
 function findShortestPathLength(maze: number[][], [xA, yA], [xB, yB]) {
-    // code goes here
     const visited: Coordinate[] = generateVisitedObjectArray(maze);
     console.log(generateVisitedObjectArray(maze));
 
@@ -51,10 +50,11 @@ function findShortestPathLength(maze: number[][], [xA, yA], [xB, yB]) {
     let bQueue = [visited[yB][xB]];
     let iteration = 0;
 
+    let aNeighbors = [];
+    let bNeighbors = [];
+
     while (aQueue.length && bQueue.length) {
         iteration++;
-        let aNeighbors = [];
-        let bNeighbors = [];
 
         //z8888888888888 a
         while (aQueue.length) {
@@ -87,7 +87,7 @@ function findShortestPathLength(maze: number[][], [xA, yA], [xB, yB]) {
         for (let i = 0; i < bNeighbors.length; i++) {
             const neighbor: Coordinate = bNeighbors[i];
 
-            if (neighbor.openedBy === BY_B) {
+            if (neighbor.openedBy === BY_A) {
                 return neighbor.length + iteration;
             } else if (neighbor.openedBy === NO_ONE) {
                 neighbor.length = iteration;
