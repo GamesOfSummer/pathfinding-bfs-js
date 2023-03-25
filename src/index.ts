@@ -54,7 +54,9 @@ function findShortestPathLength(maze: number[][], [xA, yA], [xB, yB]) {
     while (aQueue.length && bQueue.length) {
         iteration++;
         let aNeighbors = [];
+        let bNeighbors = [];
 
+        //z8888888888888 a
         while (aQueue.length) {
             const coordinate: Coordinate = aQueue.shift();
             aNeighbors = aNeighbors.concat(
@@ -62,7 +64,37 @@ function findShortestPathLength(maze: number[][], [xA, yA], [xB, yB]) {
             );
         }
 
-        bQueue = [];
+        for (let i = 0; i < aNeighbors.length; i++) {
+            const neighbor: Coordinate = aNeighbors[i];
+
+            if (neighbor.openedBy === BY_B) {
+                return neighbor.length + iteration;
+            } else if (neighbor.openedBy === NO_ONE) {
+                neighbor.length = iteration;
+                neighbor.openedBy = BY_A;
+                aQueue.push(neighbor);
+            }
+        }
+
+        //z8888888888888 b
+        while (bQueue.length) {
+            const coordinate: Coordinate = bQueue.shift();
+            bNeighbors = bNeighbors.concat(
+                getNeighbors(visited, coordinate.x, coordinate.y)
+            );
+        }
+
+        for (let i = 0; i < bNeighbors.length; i++) {
+            const neighbor: Coordinate = bNeighbors[i];
+
+            if (neighbor.openedBy === BY_B) {
+                return neighbor.length + iteration;
+            } else if (neighbor.openedBy === NO_ONE) {
+                neighbor.length = iteration;
+                neighbor.openedBy = BY_A;
+                bQueue.push(neighbor);
+            }
+        }
     }
 
     return -1;
