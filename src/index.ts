@@ -39,17 +39,6 @@ function generateVisitedObjectArray(maze): Coordinate[] {
     return visited;
 }
 
-const populateNeighbors = (visitedNode: Coordinate[], queue: Coordinate[]) => {
-    const coordinate: Coordinate = queue.shift();
-
-    let aNeighbors = [];
-    aNeighbors = aNeighbors.concat(
-        getNeighbors(visitedNode, coordinate.x, coordinate.y)
-    );
-
-    return aNeighbors;
-};
-
 function findShortestPathLength(maze: number[][], [xA, yA], [xB, yB]) {
     const visited: Coordinate[] = generateVisitedObjectArray(maze);
     // console.log(generateVisitedObjectArray(maze));
