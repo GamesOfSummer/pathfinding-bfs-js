@@ -39,9 +39,20 @@ function generateVisitedObjectArray(maze): Coordinate[] {
     return visited;
 }
 
+const populateNeighbors = (visitedNode: Coordinate[], queue: Coordinate[]) => {
+    const coordinate: Coordinate = queue.shift();
+
+    let aNeighbors = [];
+    aNeighbors = aNeighbors.concat(
+        getNeighbors(visitedNode, coordinate.x, coordinate.y)
+    );
+
+    return aNeighbors;
+};
+
 function findShortestPathLength(maze: number[][], [xA, yA], [xB, yB]) {
     const visited: Coordinate[] = generateVisitedObjectArray(maze);
-    console.log(generateVisitedObjectArray(maze));
+    // console.log(generateVisitedObjectArray(maze));
 
     visited[yA][xA].openedBy = BY_A;
     visited[yB][xB].openedBy = BY_B;
@@ -91,7 +102,7 @@ function findShortestPathLength(maze: number[][], [xA, yA], [xB, yB]) {
                 return neighbor.length + iteration;
             } else if (neighbor.openedBy === NO_ONE) {
                 neighbor.length = iteration;
-                neighbor.openedBy = BY_A;
+                neighbor.openedBy = BY_B;
                 bQueue.push(neighbor);
             }
         }
@@ -148,6 +159,17 @@ const fourByFour = [
 ];
 
 validateFxn(findShortestPathLength(fourByFour, [0, 0], [3, 3]), 6);
+
+const sixBySix = [
+    [0, 0, 0, 0, 0, 0],
+    [0, 2, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0],
+    [0, 1, 1, 1, 1, 1],
+    [0, 0, 0, 0, 0, 0],
+    [0, 0, 2, 0, 0, 0],
+];
+
+validateFxn(findShortestPathLength(sixBySix, [1, 1], [2, 5]), 7);
 
 consoleEnd();
 consoleBuffer();
